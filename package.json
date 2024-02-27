@@ -16,14 +16,16 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.4",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "react-router-native": "^6.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/eslint-parser": "^7.23.10",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-native": "^4.1.0"
+    "eslint-plugin-react-native": "^4.1.0",
+    "standard": "^17.1.0"
   },
   "private": true
 }

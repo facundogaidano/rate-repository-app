@@ -15,17 +15,8 @@ const styles = StyleSheet.create({
   colorPrimary: {
     color: theme.colors.primary
   },
-  colorAppBar: {
-    color: theme.colors.textAppBar
-  },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading
-  },
-  fontSizeHeading: {
-    fontSize: theme.fontSizes.heading
-  },
-  fontSizeSignIn: {
-    fontSize: theme.fontSizes.signIn
   },
   fontWeightBold: {
     fontWeight: theme.fontWeights.bold
@@ -37,15 +28,14 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     styles.text,
     color === 'textSecondary' && styles.colorTextSecondary,
     color === 'primary' && styles.colorPrimary,
-    color === 'appBar' && styles.colorAppBar,
     fontSize === 'subheading' && styles.fontSizeSubheading,
-    fontSize === 'heading' && styles.fontSizeHeading,
-    fontSize === 'signin' && styles.fontSizeSignIn,
     fontWeight === 'bold' && styles.fontWeightBold,
     style
   ]
 
-  return <NativeText style={textStyle} {...props} />
+  return (
+    <NativeText style={textStyle} {...props} />
+  )
 }
 
 export default Text

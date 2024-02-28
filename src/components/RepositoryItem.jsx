@@ -1,133 +1,125 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
+
 import theme from '../theme'
+import Text from './Text'
+import formatInThousands from '../utils/formatInThousands'
 
-const formatNumber = (num) => {
-  if (num === undefined) {
-    return '0'
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 15
+  },
+  topContainer: {
+    flexDirection: 'row',
+    marginBottom: 15
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  avatarContainer: {
+    flexGrow: 0,
+    marginRight: 20
+  },
+  contentContainer: {
+    flexGrow: 1,
+    flexShrink: 1
+  },
+  nameText: {
+    marginBottom: 5
+  },
+  descriptionText: {
+    flexGrow: 1
+  },
+  avatar: {
+    width: 45,
+    height: 45,
+    borderRadius: theme.roundness
+  },
+  countItem: {
+    flexGrow: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 15
+  },
+  countItemCount: {
+    marginBottom: 5
+  },
+  languageContainer: {
+    marginTop: 10,
+    overflow: 'hidden',
+    borderRadius: 5,
+    alignSelf: 'flex-start',
+    flexDirection: 'row'
+  },
+  languageText: {
+    color: 'white',
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.roundness,
+    flexGrow: 0,
+    paddingVertical: 3,
+    paddingHorizontal: 6
   }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'k'
-  }
-  return num.toString()
-}
+})
 
-const RepositoryItem = ({ repository }) => {
+const CountItem = ({ label, count }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Image source={{ uri: repository.ownerAvatarUrl }} style={styles.avatar} />
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.title}>{repository.fullName}</Text>
-          <Text style={styles.body}>{repository.description}</Text>
-          <View>
-            <Text style={styles.langTag}>{repository.language}</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.containerStats}>
-        <View style={styles.statsContainer}>
-          <Text style={styles.statsNumber}>{formatNumber(repository.stargazersCount)}</Text>
-          <View style={styles.statsTextContainer}>
-            <Text style={styles.statsText}>Stars</Text>
-          </View>
-        </View>
-        <View style={styles.statsContainer}>
-          <Text style={styles.statsNumber}>{formatNumber(repository.forksCount)}</Text>
-          <View style={styles.statsTextContainer}>
-            <Text style={styles.statsText}>Forks</Text>
-          </View>
-        </View>
-        <View style={styles.statsContainer}>
-          <Text style={styles.statsNumber}>{formatNumber(repository.reviewCount)}</Text>
-          <View style={styles.statsTextContainer}>
-            <Text style={styles.statsText}>Review</Text>
-          </View>
-        </View>
-        <View style={styles.statsContainer}>
-          <Text style={styles.statsNumber}>{formatNumber(repository.ratingAverage)}</Text>
-          <View style={styles.statsTextContainer}>
-            <Text style={styles.statsText}>Rating</Text>
-          </View>
-        </View>
-      </View>
+    <View style={styles.countItem}>
+      <Text style={styles.countItemCount} fontWeight='bold'>
+        {formatInThousands(count)}
+      </Text>
+      <Text color='textSecondary'>{label}</Text>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    borderBottomWidth: 15,
-    borderColor: '#e1e4e8',
-    flex: 1
-  },
-  containerStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 10
-  },
-  statsContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    paddingTop: 20
-  },
-  statsNumber: {
-    fontSize: theme.fontSizes.body,
-    fontWeight: theme.fontWeights.bold,
-    fontFamily: theme.fonts.main
-  },
-  statsTextContainer: {
-    paddingBottom: 5,
-    paddingTop: 10,
-    fontFamily: theme.fonts.main
-  },
-  statsText: {
-    color: theme.colors.textSecondary,
-    fontSize: theme.fontSizes.subheading
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  headerTextContainer: {
-    flex: 1,
-    marginLeft: 1
-  },
-  title: {
-    fontSize: 17,
-    marginTop: 5,
-    paddingBottom: 3,
-    fontWeight: '700',
-    fontFamily: theme.fonts.main,
-    color: theme.colors.textPrimary
-  },
-  body: {
-    fontSize: theme.fontSizes.subheading,
-    color: theme.colors.textSecondary,
-    fontFamily: theme.fonts.main
-  },
-  langTag: {
-    backgroundColor: theme.colors.primary,
-    alignSelf: 'flex-start',
-    padding: 5,
-    color: theme.colors.textAppBar,
-    fontFamily: theme.fonts.main,
-    marginTop: 10,
-    overflow: 'hidden',
-    borderRadius: 5
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#fff',
-    alignSelf: 'flex-start'
-  }
-})
+const RepositoryItem = ({ repository }) => {
+  const {
+    fullName,
+    description,
+    language,
+    forksCount,
+    stargazersCount,
+    ratingAverage,
+    reviewCount,
+    ownerAvatarUrl
+  } = repository
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.topContainer}>
+        <View style={styles.avatarContainer}>
+          <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+        </View>
+        <View style={styles.contentContainer}>
+          <Text
+            style={styles.nameText}
+            fontWeight='bold'
+            fontSize='subheading'
+            numberOfLines={1}
+          >
+            {fullName}
+          </Text>
+          <Text style={styles.descriptionText} color='textSecondary'>
+            {description}
+          </Text>
+          {language
+            ? (
+              <View style={styles.languageContainer}>
+                <Text style={styles.languageText}>{language}</Text>
+              </View>
+              )
+            : null}
+        </View>
+      </View>
+      <View style={styles.bottomContainer}>
+        <CountItem count={stargazersCount} label='Stars' />
+        <CountItem count={forksCount} label='Forks' />
+        <CountItem count={reviewCount} label='Reviews' />
+        <CountItem count={ratingAverage} label='Rating' />
+      </View>
+    </View>
+  )
+}
 
 export default RepositoryItem

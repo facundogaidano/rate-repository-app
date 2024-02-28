@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { Button, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import theme from '../theme'
 import useSignIn from '../hooks/useSignIn'
-import AuthStorage from '../utils/authStorage'
+import { useNavigate } from 'react-router-native'
 
 const initialValues = {
   username: '',
@@ -63,7 +63,7 @@ const SignInForm = ({ onSubmit }) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn()
-  const authStorage = new AuthStorage()
+  const navigate = useNavigate()
 
   const onSubmit = async (values) => {
     const { username, password } = values
@@ -71,7 +71,7 @@ const SignIn = () => {
     try {
       const data = await signIn({ username, password })
       console.log(data)
-      await authStorage.setAccessToken(data.authenticate.accessToken)
+      navigate('/')
     } catch (error) {
       console.error(error)
     }

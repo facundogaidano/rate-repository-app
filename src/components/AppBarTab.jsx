@@ -1,6 +1,9 @@
 import { Pressable, StyleSheet, Text } from 'react-native'
 import theme from '../theme'
 import { Link } from 'react-router-native'
+import useSignOut from '../hooks/useSignOut'
+import useAuthStorage from '../hooks/useAuthStorage'
+import { useEffect, useState } from 'react'
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +22,7 @@ const styles = StyleSheet.create({
     fontWeight: theme.fontWeights.bold,
     fontFamily: theme.fonts.main
   },
-  signIn: {
+  signInOut: {
     color: theme.colors.textAppBar,
     fontSize: theme.fontSizes.signIn,
     fontWeight: theme.fontWeights.normal,
@@ -28,12 +31,38 @@ const styles = StyleSheet.create({
 })
 
 const AppBarTab = ({ title }) => {
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const signOut = useSignOut()
+  const authStorage = useAuthStorage()
+
+  const handleSignOut = async () => {
+    await signOut()
+    setIsSignedIn(false)
+  }
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      const token = await authStorage.getAccessToken()
+      setIsSignedIn(token !== null)
+    }
+
+    checkAuthStatus()
+  }, [])
+
   return (
     <Pressable style={styles.container}>
       <Link to='/'><Text style={styles.title}>{title}</Text></Link>
-      <Pressable>
-        <Link to='/login'><Text style={styles.signIn}>Sign In</Text></Link>
-      </Pressable>
+      {isSignedIn
+        ? (
+          <Pressable onPress={handleSignOut}>
+            <Text style={styles.signInOut}>Sign Out</Text>
+          </Pressable>
+          )
+        : (
+          <Link to='/login'>
+            <Text style={styles.signInOut}>Sign In</Text>
+          </Link>
+          )}
     </Pressable>
   )
 }

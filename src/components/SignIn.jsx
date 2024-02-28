@@ -25,9 +25,6 @@ const SignInForm = ({ onSubmit }) => {
     onSubmit
   })
 
-  console.log(formik.errors, 'errors')
-  console.log(formik.touched, 'touched')
-
   return (
     <View style={styles.container}>
       <TextInput

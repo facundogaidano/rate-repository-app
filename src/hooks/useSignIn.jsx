@@ -4,26 +4,21 @@ import useAuthStorage from '../hooks/useAuthStorage'
 
 const useSignIn = () => {
   const [mutate, result] = useMutation(USER_LOGIN)
-  const authStorage = useAuthStorage()
   const apolloClient = useApolloClient()
+  const authStorage = useAuthStorage()
 
   const signIn = async ({ username, password }) => {
-    try {
-      const { data } = await mutate({
-        variables: {
-          credentials: {
-            username,
-            password
-          }
-        }
-      })
+    const credentials = { username, password }
+
+    const payload = await mutate({ variables: { credentials } })
+    const { data } = payload
+
+    if (data?.authenticate) {
       await authStorage.setAccessToken(data.authenticate.accessToken)
       apolloClient.resetStore()
-      return data
-    } catch (error) {
-      console.error(error)
-      throw error
     }
+
+    return payload
   }
 
   return [signIn, result]

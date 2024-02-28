@@ -11,13 +11,8 @@ const initialValues = {
 }
 
 const validationSchema = yup.object().shape({
-  username: yup
-    .string()
-    .min(3, 'Username must be at least  3 characters')
-    .required('Username is required'),
-  password: yup
-    .string()
-    .required('Password is required')
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required')
 })
 
 const SignInForm = ({ onSubmit }) => {
@@ -68,14 +63,11 @@ const SignIn = () => {
   const onSubmit = async (values) => {
     const { username, password } = values
 
-    try {
-      const data = await signIn({ username, password })
-      console.log(data)
-      navigate('/')
-    } catch (error) {
-      console.error(error)
-    }
+    await signIn({ username, password })
+
+    navigate('/', { replace: true })
   }
+
   return <SignInForm onSubmit={onSubmit} />
 }
 

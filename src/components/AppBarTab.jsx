@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, Text } from 'react-native'
 import theme from '../theme'
-import { Link } from 'react-router-native'
-import useSignOut from '../hooks/useSignOut'
+import { Link, useNavigate } from 'react-router-native'
 import useAuthStorage from '../hooks/useAuthStorage'
-import { useEffect, useState } from 'react'
+import { useApolloClient, useQuery } from '@apollo/client'
+import { GET_CURRENT_USER } from '../graphql/queries'
 
 const styles = StyleSheet.create({
   container: {
@@ -31,30 +31,24 @@ const styles = StyleSheet.create({
 })
 
 const AppBarTab = ({ title }) => {
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const signOut = useSignOut()
+  const { data } = useQuery(GET_CURRENT_USER)
+  const currentUser = data?.me
+  const apolloClient = useApolloClient()
   const authStorage = useAuthStorage()
+  const navigate = useNavigate()
 
-  const handleSignOut = async () => {
-    await signOut()
-    setIsSignedIn(false)
+  const onSignOut = async () => {
+    await authStorage.removeAccessToken()
+    apolloClient.resetStore()
+    navigate('/')
   }
-
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      const token = await authStorage.getAccessToken()
-      setIsSignedIn(token !== null)
-    }
-
-    checkAuthStatus()
-  }, [])
 
   return (
     <Pressable style={styles.container}>
       <Link to='/'><Text style={styles.title}>{title}</Text></Link>
-      {isSignedIn
+      {currentUser
         ? (
-          <Pressable onPress={handleSignOut}>
+          <Pressable onPress={onSignOut}>
             <Text style={styles.signInOut}>Sign Out</Text>
           </Pressable>
           )

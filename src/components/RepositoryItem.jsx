@@ -73,11 +73,13 @@ const styles = StyleSheet.create({
   },
   statsNumber: {
     fontSize: theme.fontSizes.body,
-    fontWeight: theme.fontWeights.bold
+    fontWeight: theme.fontWeights.bold,
+    fontFamily: theme.fonts.main
   },
   statsTextContainer: {
     paddingBottom: 5,
-    paddingTop: 10
+    paddingTop: 10,
+    fontFamily: theme.fonts.main
   },
   statsText: {
     color: theme.colors.textSecondary,
@@ -96,11 +98,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingBottom: 3,
     fontWeight: '700',
+    fontFamily: theme.fonts.main,
     color: theme.colors.textPrimary
   },
   body: {
     fontSize: theme.fontSizes.subheading,
-    color: theme.colors.textSecondary
+    color: theme.colors.textSecondary,
+    fontFamily: theme.fonts.main
   },
   langTag: {
     backgroundColor: theme.colors.primary,

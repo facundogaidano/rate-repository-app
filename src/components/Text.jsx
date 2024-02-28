@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   fontSizeHeading: {
     fontSize: theme.fontSizes.heading
   },
+  fontSizeSignIn: {
+    fontSize: theme.fontSizes.signIn
+  },
   fontWeightBold: {
     fontWeight: theme.fontWeights.bold
   }
@@ -37,6 +40,7 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     color === 'appBar' && styles.colorAppBar,
     fontSize === 'subheading' && styles.fontSizeSubheading,
     fontSize === 'heading' && styles.fontSizeHeading,
+    fontSize === 'signin' && styles.fontSizeSignIn,
     fontWeight === 'bold' && styles.fontWeightBold,
     style
   ]

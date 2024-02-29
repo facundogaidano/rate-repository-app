@@ -62,10 +62,11 @@ const styles = StyleSheet.create({
   }
 })
 
-const CountItem = ({ label, count }) => {
+const CountItem = ({ label, count, testID }) => {
+  console.log('CountItem testID:', testID)
   return (
     <View style={styles.countItem}>
-      <Text style={styles.countItemCount} fontWeight='bold'>
+      <Text style={styles.countItemCount} fontWeight='bold' testID={testID}>
         {formatInThousands(count)}
       </Text>
       <Text color='textSecondary'>{label}</Text>
@@ -73,8 +74,9 @@ const CountItem = ({ label, count }) => {
   )
 }
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, testID }) => {
   const {
+    id,
     fullName,
     description,
     language,
@@ -84,9 +86,10 @@ const RepositoryItem = ({ repository }) => {
     reviewCount,
     ownerAvatarUrl
   } = repository
+  console.log('RepositoryItem testID:', testID)
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='repositoryItem'>
       <View style={styles.topContainer}>
         <View style={styles.avatarContainer}>
           <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
@@ -113,10 +116,10 @@ const RepositoryItem = ({ repository }) => {
         </View>
       </View>
       <View style={styles.bottomContainer}>
-        <CountItem count={stargazersCount} label='Stars' />
-        <CountItem count={forksCount} label='Forks' />
-        <CountItem count={reviewCount} label='Reviews' />
-        <CountItem count={ratingAverage} label='Rating' />
+        <CountItem count={stargazersCount} label='Stars' testID={`${id}-stargazer-count`} />
+        <CountItem count={forksCount} label='Forks' testID={`${id}-forks-count`} />
+        <CountItem count={reviewCount} label='Reviews' testID={`${id}-review-count`} />
+        <CountItem count={ratingAverage} label='Rating' testID={`${id}-rating-average`} />
       </View>
     </View>
   )

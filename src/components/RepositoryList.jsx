@@ -4,23 +4,29 @@ import RepositoryItem from './RepositoryItem'
 import useRepositories from '../hooks/useRepositories'
 import { useNavigate } from 'react-router-native'
 import { useState } from 'react'
-import { Button, Menu, Text } from 'react-native-paper'
+import { Button, Menu, Searchbar } from 'react-native-paper'
+import Text from './Text'
 import theme from '../theme'
 
 const styles = StyleSheet.create({
   separator: {
     height: 10
   },
-  orderList: {
+  buttonList: {
     paddingVertical: 5,
-    minWidth: 64,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: theme.colors.mainBackground,
     borderRadius: theme.roundness
   },
   textColor: {
     color: theme.colors.appBarBackground
+  },
+  searchBar: {
+    backgroundColor: 'white',
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 10,
+    borderRadius: theme.roundness,
+    color: theme.colors.textSecondary
   }
 })
 
@@ -48,11 +54,12 @@ export const RepositoryListContainer = ({ repositories, onRepositoryPress, ListH
 }
 
 const RepositoryList = () => {
+  const [searchKeyword, setSearchKeyword] = useState('')
   const [orderBy, setOrderBy] = useState('CREATED_AT')
   const [orderDirection, setOrderDirection] = useState('DESC')
   const [selectedOption, setSelectedOption] = useState('CREATED_AT')
   const [menuVisible, setMenuVisible] = useState(false)
-  const { repositories } = useRepositories(orderBy, orderDirection)
+  const { repositories } = useRepositories(orderBy, orderDirection, searchKeyword)
   const navigate = useNavigate() // Get the navigate function
 
   const openMenu = () => setMenuVisible(true)
@@ -82,40 +89,53 @@ const RepositoryList = () => {
       onRepositoryPress={handleRepositoryPress} // Pass the onPress handler
       ListHeaderComponent={
         <>
-          <Menu
-            visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={
-              <View>
-                <Button style={styles.orderList} onPress={openMenu}>
-                  <Text style={styles.textColor}>
-                    {selectedOption === 'CREATED_AT'
-                      ? 'Latest Repositories'
-                      : selectedOption === 'HIGHEST_RATED' ? 'Highest Rated Repositories' : 'Lowest Rated Repositories'}
-                  </Text>
-                </Button>
-              </View>
-          }
+          <Searchbar
+            placeholder='Search'
+            onChangeText={setSearchKeyword}
+            style={styles.searchBar}
+            value={searchKeyword}
+            placeholderTextColor={theme.colors.textSecondary}
+          />
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'center'
+          }}
           >
-            <Menu.Item
-              onPress={() => {
-                handleOrderByChange('CREATED_AT')
-                closeMenu()
-              }} title='Latest Repositories'
-            />
-            <Menu.Item
-              onPress={() => {
-                handleOrderByChange('HIGHEST_RATED')
-                closeMenu()
-              }} title='Highest Rated Repositories'
-            />
-            <Menu.Item
-              onPress={() => {
-                handleOrderByChange('LOWEST_RATED')
-                closeMenu()
-              }} title='Lowest Rated Repositories'
-            />
-          </Menu>
+            <Menu
+              visible={menuVisible}
+              onDismiss={closeMenu}
+              anchor={
+                <View>
+                  <Button style={styles.buttonList} onPress={openMenu}>
+                    <Text style={styles.textColor}>
+                      {selectedOption === 'CREATED_AT'
+                        ? 'Latest Repositories'
+                        : selectedOption === 'HIGHEST_RATED' ? 'Highest Rated Repositories' : 'Lowest Rated Repositories'}
+                    </Text>
+                  </Button>
+                </View>
+          }
+            >
+              <Menu.Item
+                onPress={() => {
+                  handleOrderByChange('CREATED_AT')
+                  closeMenu()
+                }} title='Latest Repositories'
+              />
+              <Menu.Item
+                onPress={() => {
+                  handleOrderByChange('HIGHEST_RATED')
+                  closeMenu()
+                }} title='Highest Rated Repositories'
+              />
+              <Menu.Item
+                onPress={() => {
+                  handleOrderByChange('LOWEST_RATED')
+                  closeMenu()
+                }} title='Lowest Rated Repositories'
+              />
+            </Menu>
+          </View>
         </>
       }
 

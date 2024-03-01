@@ -32,16 +32,17 @@ const SignInForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
       <View style={styles.fieldContainer}>
-        <FormikTextInput style={theme.colors.primary} name='username' placeholder='Username' />
+        <FormikTextInput placeholderTextColor={theme.colors.divider} style={theme.colors.primary} name='username' placeholder='Username' />
       </View>
       <View style={styles.fieldContainer}>
         <FormikTextInput
           name='password'
           placeholder='Password'
+          placeholderTextColor={theme.colors.divider}
           secureTextEntry
         />
       </View>
-      <Button onPress={onSubmit}>Sign in</Button>
+      <Button testID='signInButton' onPress={onSubmit}>Sign in</Button>
     </View>
   )
 }
@@ -58,6 +59,10 @@ const SignIn = () => {
     navigate('/', { replace: true })
   }
 
+  return <SignInContainer onSubmit={onSubmit} />
+}
+
+export const SignInContainer = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}

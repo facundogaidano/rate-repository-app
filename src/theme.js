@@ -13,7 +13,9 @@ const theme = {
   },
   fontSizes: {
     body: 14,
-    subheading: 16
+    subheading: 16,
+    large: 20,
+    reviewText: 16
   },
   fonts: {
     main: Platform.select({

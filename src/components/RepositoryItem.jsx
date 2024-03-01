@@ -1,8 +1,8 @@
-import { View, Image, StyleSheet } from 'react-native'
-
+import { View, Image, StyleSheet, Linking, Pressable } from 'react-native'
 import theme from '../theme'
 import Text from './Text'
 import formatInThousands from '../utils/formatInThousands'
+import Button from './Button'
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginBottom: 15
   },
   avatarContainer: {
     flexGrow: 0,
@@ -63,7 +64,6 @@ const styles = StyleSheet.create({
 })
 
 const CountItem = ({ label, count, testID }) => {
-  console.log('CountItem testID:', testID)
   return (
     <View style={styles.countItem}>
       <Text style={styles.countItemCount} fontWeight='bold' testID={testID}>
@@ -74,7 +74,7 @@ const CountItem = ({ label, count, testID }) => {
   )
 }
 
-const RepositoryItem = ({ repository, testID }) => {
+const RepositoryItem = ({ repository, showGitHubButton, onPress }) => {
   const {
     id,
     fullName,
@@ -84,25 +84,29 @@ const RepositoryItem = ({ repository, testID }) => {
     stargazersCount,
     ratingAverage,
     reviewCount,
-    ownerAvatarUrl
+    ownerAvatarUrl,
+    url
   } = repository
-  console.log('RepositoryItem testID:', testID)
 
   return (
     <View style={styles.container} testID='repositoryItem'>
       <View style={styles.topContainer}>
         <View style={styles.avatarContainer}>
-          <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+          <Pressable onPress={() => onPress(id)}>
+            <Image source={{ uri: ownerAvatarUrl }} style={styles.avatar} />
+          </Pressable>
         </View>
         <View style={styles.contentContainer}>
-          <Text
-            style={styles.nameText}
-            fontWeight='bold'
-            fontSize='subheading'
-            numberOfLines={1}
-          >
-            {fullName}
-          </Text>
+          <Pressable onPress={() => onPress(id)}>
+            <Text
+              style={styles.nameText}
+              fontWeight='bold'
+              fontSize='subheading'
+              numberOfLines={1}
+            >
+              {fullName}
+            </Text>
+          </Pressable>
           <Text style={styles.descriptionText} color='textSecondary'>
             {description}
           </Text>
@@ -121,6 +125,9 @@ const RepositoryItem = ({ repository, testID }) => {
         <CountItem count={reviewCount} label='Reviews' testID={`${id}-review-count`} />
         <CountItem count={ratingAverage} label='Rating' testID={`${id}-rating-average`} />
       </View>
+      {showGitHubButton && (
+        <Button title='Open in GitHub' onPress={() => Linking.openURL(url)}>Open in GitHub</Button>
+      )}
     </View>
   )
 }

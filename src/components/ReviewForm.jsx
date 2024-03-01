@@ -75,15 +75,21 @@ const ReviewForm = ({ onSubmit }) => {
 }
 
 const Review = () => {
-  const [review] = useReview()
+  const [createReview] = useReview()
   const navigate = useNavigate()
 
   const onSubmit = async (values) => {
     const { ownerName, rating, repositoryName, text } = values
+    const review = { ownerName, rating: parseInt(rating, 10), repositoryName, text }
 
-    await review({ ownerName, rating, repositoryName, text })
-
-    navigate('/', { replace: true })
+    try {
+      await createReview({ variables: { review } })
+      navigate('/', { replace: true })
+    } catch (error) {
+      console.error('Error submitting review:', error)
+      // Handle the error appropriately, e.g., show a message to the user
+      // You can also check error.message or error.graphQLErrors for more details
+    }
   }
 
   return <ReviewContainer onSubmit={onSubmit} />

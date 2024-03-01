@@ -1,18 +1,11 @@
 import { useMutation } from '@apollo/client'
-
 import { ADD_REVIEW } from '../graphql/mutations'
+import { GET_USER_REVIEWS } from '../graphql/queries'
 
 export const useReview = () => {
-  const [createReview, result] = useMutation(ADD_REVIEW)
+  const [createReview, { data }] = useMutation(ADD_REVIEW, {
+    refetchQueries: [{ query: GET_USER_REVIEWS }]
+  })
 
-  const submitReview = async ({ ownerName, rating, repositoryName, text }) => {
-    const review = { ownerName, rating: parseInt(rating, 10), repositoryName, text }
-
-    const payload = await createReview({
-      variables: { review }
-    })
-    return payload
-  }
-
-  return [submitReview, result]
+  return [createReview, data]
 }

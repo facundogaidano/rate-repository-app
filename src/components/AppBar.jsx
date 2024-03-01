@@ -73,6 +73,7 @@ const AppBar = () => {
           ? (
             <>
               <AppBarTab to='/review-form'>Create a review</AppBarTab>
+              <AppBarTab to='/my-reviews'>My reviews</AppBarTab>
               <AppBarTab onPress={onSignOut}>Sign out</AppBarTab>
             </>
             )

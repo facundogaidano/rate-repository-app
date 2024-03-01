@@ -28,6 +28,27 @@ export const GET_CURRENT_USER = gql`
   ${USER_BASE_FIELDS}
 `
 
+export const GET_USER_REVIEWS = gql`
+  query {
+    me {
+      reviews {
+        edges {
+          node {
+            createdAt
+            id
+            rating
+            text
+            repository {
+              id
+              fullName
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
 export const GET_REPOSITORY = gql`
  query Repository($repositoryId: ID!) {
     repository(id: $repositoryId) {
